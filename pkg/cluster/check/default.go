@@ -182,5 +182,16 @@ func PreBootSequenceChecks() []ClusterCheck {
 	return preBootSequenceChecks
 }
 
-		// wait for all nodes to finish booting
+func PreBootSequenceChecksFiltered(skips []string) []ClusterCheck {
+	filtered := []ClusterCheck{}
+
+	for name, check := range checks {
+		// If the check name is in the `skips` list, exclude it
+		if slices.Contains(skips, name) {
+			continue
+		}
+		filtered = append(filtered, check)
+	}
+
+	return filtered
 }
